@@ -1,0 +1,1 @@
+copy .vim to userhome
