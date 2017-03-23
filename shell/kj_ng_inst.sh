@@ -41,9 +41,9 @@ fi \
 \
 && yum groupinstall "Development tools" -y \
 && cd /tmp \
-&& tar -zxf pcre.tar.gz \
-&& tar -zxf zlib.tar.gz \
-&& tar -zxf nginx.tar.gz \
+&& tar -zxf $PCRE_VERSION.tar.gz \
+&& tar -zxf $ZLIB_VERSION.tar.gz \
+&& tar -zxf nginx-$NGINX_VERSION.tar.gz \
 && cd $PCRE_VERSION \
 && ./configure --disable-shared \
 && cd ../nginx-$NGINX_VERSION \
@@ -51,4 +51,5 @@ fi \
 && sed -i "/NGINX_VER/{s/nginx/$SERVERNAME/g}" src/core/nginx.h \
 && sed -i "/static char/{s/nginx/$SERVERNAME/g}" src/http/ngx_http_header_filter_module.c \
 && ./configure $CONFIG \
-&& make && make test
+&& make && make install
+chown -R mpsp.mpsp $NGINX_HOME
