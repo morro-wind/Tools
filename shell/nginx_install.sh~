@@ -6,11 +6,11 @@
 #Building nginx
 #--------------
 #Download building pcre and zlib.
-#nginx installation path is /usr/local/nginx
+#nginx installation path is /usr/mpsp/nginx
 
 #Nginx installation directory
-NGINX_HOME=/usr/local/nginx
-USER_HMOE=~/
+NGINX_HOME=/usr/mpsp/nginx
+USER_HMOE=/usr/mpsp
 
 #Software version
 NGINX_VERSION=1.8.0

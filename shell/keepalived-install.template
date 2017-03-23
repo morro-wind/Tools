@@ -1,0 +1,37 @@
+#!/bin/bash
+
+#The keepalive installation script
+
+#On RedHat libraries install
+#openssl-devel libnl3-devel ipset-devel iptables-devel libnfnetlink-devel
+#For SNMP support:
+#net-snmp-devel
+
+#Software name
+KEEP_NAM=keepalived-1.3.4
+
+#Default source directory
+KEEP_SRC=/usr/local/src
+
+#Default software installation directory
+KEEP_DIR=/usr/local
+
+#Default config directory
+KEEP_CONF=/etc/keepalived
+
+#Installation
+
+yum install gcc-c++ openssl-devel libnl3-devel ipset-devel iptables-devel libnfnetlink-devel net-snmp-devel
+
+cd $KEEP_SRC
+tar zxf "$KEEP_NAM".tar.gz 
+cd $KEEP_SRC/$KEEP_NAM
+./configure --prefix=$KEEP_DIR
+make && make install
+
+#configure run leve and 
+cp -r keepalived/etc/keepalived /etc/
+cp keepalived/etc/init.d/keepalived.rh.init /et/init.d/keepalived
+cp keepalived/etc/sysconfig/keepalived /etc/sysconfig/
+
+service keepalived start
