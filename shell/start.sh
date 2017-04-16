@@ -25,6 +25,21 @@ do_start()
     do
         cd $i
         sed -i '/^tail/s/^/#/' run.sh
+
+        if [ -f runv.sh ];then
+          sed -i '/^tail/s/^/#/' runv.sh
+        fi
+
+        if [ -f runs ];then
+          ./runs
+          sleep 3
+        fi
+
+        if [ -f stop.sh ];then
+          ./stop.sh
+          sleep 3
+        fi
+
         ./run.sh 2>/dev/null
     done
 
