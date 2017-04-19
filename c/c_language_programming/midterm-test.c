@@ -2,9 +2,20 @@
 
 void main()
 {
-    int n,i;
-    double u[i];
+    int n,i=0,m;
+    double u[n];
+    printf ("Enter n:");
     scanf ("%d",&n);
-    for (i=0;i<n;i++)
-        scanf ("%lf",&u[i]);
+    if (n>1&&n<=20)
+    {
+        printf ("n=%d\n",n);
+        printf ("Enter i:");
+        while((&u[i]=getchar())!=EOF)
+
+            i++;
+
+        for ( m = 0; m<n; m++)
+            printf("%lf  ", u[m]);
+        return 0;
+    }
 }
