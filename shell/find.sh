@@ -56,7 +56,7 @@ do
     if [ -f "$i/para" ];then
         echo -e "cat $i/para:"
         cat "$i/para"
-    elif [ -f "$i/appenv"];then
+    elif [ -f "$i/appenv" ];then
         echo -e "cat $i/appenv:"
         cat "$i/appenv"
     fi
