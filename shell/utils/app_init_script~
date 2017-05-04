@@ -29,6 +29,16 @@ case "$1" in
             kill -s QUIT $PID
             retval=$?
             echo
-            [ $retval -eq 0 ] && rm -f $
+            [ $retval -eq 0 ] && rm -f $lockfile
+            echo "${APP_NAME} stopped"
         fi
+        ;;
+    status)
+        PID=$(cat $PIDFILE)
+        if [ ! -x /proc/${PID} ];then
+            echo '${APP_HOME} is not running'
+        else
+            echo "${APP_HOME} is running ($PID)"
+        fi
+        ;;
 esac
