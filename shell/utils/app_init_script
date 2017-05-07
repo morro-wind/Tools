@@ -1,0 +1,64 @@
+#!/bin/bash
+#
+#
+#
+#
+#
+#   APP_NAME
+#   APP_HOME
+#   JAVA_HOME
+
+APP_NAME=javaapp
+APP_HOME=/usr/mpsp
+JAVA_HMOE=/usr/java/default
+JAVA_EXE=${JAVA_HOME}/bin/java
+CLASS_PATH=
+
+PIDFILE=/usr/mpsp/pid/${APP_NAME}.pid
+
+test -x $JAVA_EXE || exit 0
+
+case "$1" in
+    start)
+        if [ -f $PIDFILE ];then
+            echo "$PIDFILE exists, process is already running or crashed"
+        else
+            echo "Starting ${APP_NAME} service..."
+            $JAVA_EXE $APP_HOME
+            echo $! > $PIDFILE
+        fi
+        ;;
+    stop)
+        if [ ! -f $PIDFILE ];then
+            echo "$PIDFILE does not exist, process is not running"
+        else
+            PID=$(cat $PIDFILE)
+            echo "Stopping..."
+            kill -s QUIT $PID
+            while [ -x /proc/${PID} ]
+            do
+                echo "Waiting for ${APP_NAME} to shutdown ..."
+                sleep 1
+            done
+            retval=$?
+            echo
+            [ $retval -eq 0 ] && rm -f $lockfile
+            echo "${APP_NAME} stopped"
+        fi
+        ;;
+    status)
+        PID=$(cat $PIDFILE)
+        if [ ! -x /proc/${PID} ];then
+            echo '${APP_HOME} is not running'
+        else
+            echo "${APP_HOME} is running ($PID)"
+        fi
+        ;;
+    restart)
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo "Please use start, stop, restart or status as first argument"
+        ;;
+esac
