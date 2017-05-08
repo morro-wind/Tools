@@ -2,13 +2,38 @@
 #
 #
 #
-APP_NAME=APP
+#
+#
+#   APP_NAME
+#   APP_HOME
+#   JAVA_HOME
+#   CLASSPATH
+
+APP_NAME=javaapp
 APP_HOME=/usr/mpsp
-JAVA_HMOE=/usr/java/default
-JAVA_EXE=${JAVA_HOME}/bin
+JAVA_HOME=/usr/java/default
+JAVA_EXE=${JAVA_HOME}/bin/java
+CLASS_HOME=
+
 CLASSPATH=
 
 PIDFILE=/usr/mpsp/pid/${APP_NAME}.pid
+
+test -x $JAVA_EXE || exit 0
+
+[ -d $APPLIB_HOME ] || exit 0
+
+#if [ -f $APPLIB_HOME ];then
+#    for line in `find /usr/mpsp/plat2-paybusi/v2/app/lib/ -regex '.*jar$'`
+#    do
+#        CLASSPATH=$CLASSPATH:$line
+#    done
+#fi
+
+if [ ! -z "$CLASSPATH" ] ; then
+    CLASSPATH="$CLASSPATH":
+fi
+
 
 case "$1" in
     start)
@@ -16,6 +41,12 @@ case "$1" in
             echo "$PIDFILE exists, process is already running or crashed"
         else
             echo "Starting ${APP_NAME} service..."
+
+            for line in `find $CLASS_HOME -regex '.*jar$'`
+            do
+                CLASSPATH="$CLASSPATH""$line"
+            done
+
             $JAVA_EXE $APP_HOME
             echo $! > $PIDFILE
         fi
@@ -27,6 +58,11 @@ case "$1" in
             PID=$(cat $PIDFILE)
             echo "Stopping..."
             kill -s QUIT $PID
+            while [ -x /proc/${PID} ]
+            do
+                echo "Waiting for ${APP_NAME} to shutdown ..."
+                sleep 1
+            done
             retval=$?
             echo
             [ $retval -eq 0 ] && rm -f $lockfile
@@ -40,5 +76,12 @@ case "$1" in
         else
             echo "${APP_HOME} is running ($PID)"
         fi
+        ;;
+    restart)
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo "Please use start, stop, restart or status as first argument"
         ;;
 esac
