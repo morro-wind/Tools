@@ -10,12 +10,15 @@
 #   CLASSPATH
 
 APP_NAME=javaapp
-APP_HOME=/usr/mpsp
-JAVA_HOME=/usr/java/default
+APP_PATH=/usr/mpsp
+APP_BIN=
+JAVA_PATH=/usr/java/default
 JAVA_EXE=${JAVA_HOME}/bin/java
+CONSOLE_OUT=
 CLASS_HOME=
 
 CLASSPATH=
+JAVA_OPTS="-Xms512m -Xmx512m"
 
 PIDFILE=/usr/mpsp/pid/${APP_NAME}.pid
 
@@ -47,7 +50,14 @@ case "$1" in
                 CLASSPATH="$CLASSPATH""$line"
             done
 
-            $JAVA_EXE $APP_HOME
+            nohup $JAVA_EXE $JAVA_OPTS \
+                -Dflag=$APP_NAME \
+                -classpath $CLASSPATH \
+                -Djava.security.manager \
+                -Djava.security.policy== $APP_POLICY \
+                -Djava.rmi.server.codebase=file://${APP_BIN}/ \
+                com.umpay.StartServer \
+                >> "$CONSOLE_OUT" 2>&1 "&"
             echo $! > $PIDFILE
         fi
         ;;

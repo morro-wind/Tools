@@ -56,7 +56,7 @@ case "$1" in
                 -Djava.security.manager \
                 -Djava.security.policy== $APP_POLICY \
                 -Djava.rmi.server.codebase=file://${APP_BIN}/ \
-                com.umpay.StartServer \
+                com.upay.StartServer \
                 >> "$CONSOLE_OUT" 2>&1 "&"
             echo $! > $PIDFILE
         fi
