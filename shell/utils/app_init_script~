@@ -2,13 +2,42 @@
 #
 #
 #
-APP_NAME=APP
-APP_HOME=/usr/mpsp
-JAVA_HMOE=/usr/java/default
-JAVA_EXE=${JAVA_HOME}/bin
+#
+#
+#   APP_NAME
+#   APP_HOME
+#   JAVA_HOME
+#   CLASSPATH
+
+APP_NAME=javaapp
+APP_PATH=/usr/mpsp
+APP_BIN=
+JAVA_PATH=/usr/java/default
+JAVA_EXE=${JAVA_HOME}/bin/java
+CONSOLE_OUT=
+CLASS_HOME=
+MAIN_CLASS
+
 CLASSPATH=
+JAVA_OPTS="-Xms512m -Xmx512m"
 
 PIDFILE=/usr/mpsp/pid/${APP_NAME}.pid
+
+test -x $JAVA_EXE || exit 0
+
+[ -d $APPLIB_HOME ] || exit 0
+
+#if [ -f $APPLIB_HOME ];then
+#    for line in `find /usr/mpsp/plat2-paybusi/v2/app/lib/ -regex '.*jar$'`
+#    do
+#        CLASSPATH=$CLASSPATH:$line
+#    done
+#fi
+
+if [ ! -z "$CLASSPATH" ] ; then
+    CLASSPATH="$CLASSPATH":
+fi
+
 
 case "$1" in
     start)
@@ -16,7 +45,20 @@ case "$1" in
             echo "$PIDFILE exists, process is already running or crashed"
         else
             echo "Starting ${APP_NAME} service..."
-            $JAVA_EXE $APP_HOME
+
+            for line in `find $CLASS_HOME -regex '.*jar$'`
+            do
+                CLASSPATH="$CLASSPATH""$line"
+            done
+
+            nohup $JAVA_EXE $JAVA_OPTS \
+                -Dflag=$APP_NAME \
+                -classpath $CLASSPATH \
+                -Djava.security.manager \
+                -Djava.security.policy== $APP_POLICY \
+                -Djava.rmi.server.codebase=file://${APP_BIN}/ \
+                $MAIN_CLASS \
+                >> "$CONSOLE_OUT" 2>&1 "&"
             echo $! > $PIDFILE
         fi
         ;;
@@ -27,6 +69,11 @@ case "$1" in
             PID=$(cat $PIDFILE)
             echo "Stopping..."
             kill -s QUIT $PID
+            while [ -x /proc/${PID} ]
+            do
+                echo "Waiting for ${APP_NAME} to shutdown ..."
+                sleep 1
+            done
             retval=$?
             echo
             [ $retval -eq 0 ] && rm -f $lockfile
@@ -40,5 +87,12 @@ case "$1" in
         else
             echo "${APP_HOME} is running ($PID)"
         fi
+        ;;
+    restart)
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo "Please use start, stop, restart or status as first argument"
         ;;
 esac
