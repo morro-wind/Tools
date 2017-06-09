@@ -53,16 +53,35 @@ do_start()
 do_stop()
 {
     cd ${USER_HOME}
-    for i in `find ./ -path ./appBakeup -prune -o -path ./shengchan_bak -prune -path ./lazy -prune -path ./yunxing -prune -o -name "serv.sh" -exec dirname {} \;`
+     for i in `find $USER_HOME -path ${USER_HOME}/appBakeup -prune -o -path \
+        ${USER_HOME}/shengchan_bak -prune -path ${USER_HOME}/lazy -prune -path \
+        ${USER_HOME}/yunxing -prune -o -name "serv.sh" -exec dirname {} \;`
     do
-        cd ${USER_HOME}/$i
-        ./unserv.sh 2>/dev/null
+        cd $i
+        sed -i '/^tail/s/^/#/' unserv.sh
+    	./unserv.sh 2>/dev/null
     done
 
-    for i in `find ./ -path ./appBakeup -prune -o -path ./shengchan_bak -prune -path ./lazy -prune -path ./yunxing -prune -o -name "run.sh" -exec dirname {} \;`
+    for i in `find ${USER_HOME}/ -path ${USER_HOME}/appBakeup -prune -o -path \
+        ${USER_HOME}/shengchan_bak -prune -path ${USER_HOME}/lazy -prune -path \
+        ${USER_HOME}/yunxing -prune -o -name "run.sh" -exec dirname {} \;`
     do
-        cd ${USER_HOME}/$i
-        ./runs 2>/dev/null
+        cd $i
+        sed -i '/^tail/s/^/#/' runv.sh
+
+        if [ -f runv.sh ];then
+          sed -i '/^tail/s/^/#/' runv.sh
+        fi
+
+        if [ -f runs ];then
+          ./runs
+          sleep 3
+        fi
+
+        if [ -f stop.sh ];then
+          ./stop.sh
+          sleep 3
+        fi
     done
 
     for i in `find ${USER_HOME}/run/ -regex ".*s$" -exec basename {} \;`

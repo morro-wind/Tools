@@ -1,2 +1,52 @@
 #nginx log_format
 http://www.cnblogs.com/LoveJulin/p/5082363.html
+
+#工作流引擎
+#workflow-activiti
+http://www.kafeitu.me/activiti/2012/03/22/workflow-activiti-action.html
+
+#Docker存储驱动之Device Mapper简介
+http://www.cnblogs.com/styshoo/p/6528762.html
+
+#IBM文档库
+https://www.ibm.com/developerworks/cn/views/web/libraryview.jsp?
+
+#go入门
+http://www.ituring.com.cn/book/1205
+
+#搜索技巧
+https://www.zhihu.com/question/20161362?rf=19798921
+
+#Snort 入侵检测系统
+#itop
+#http://www.miit.gov.cn/n1146295/n1146557/n1146614/c5345009/content.html
+
+#docker devops
+http://docs.devopshub.cn/udad-devops-docker-hols/index.html#
+
+#pidof
+http://codingstandards.iteye.com/blog/841123
+
+#pinpoint
+http://blog.csdn.net/mingyu1016/article/details/53925611
+
+#nginx
+#后端节点健康检查
+http://www.iyunv.com/thread-38535-1-1.html
+#openresty
+http://jinnianshilongnian.iteye.com/blog/2186448
+#http://blog.csdn.net/xu_ya_fei/article/details/41964495
+
+#jvm 启动参数
+http://blog.csdn.net/turkeyzhou/article/details/7619472
+http://blog.itpub.net/5859/viewspace-796820/
+
+#redis
+http://www.cnblogs.com/yuanermen/p/5717885.html
+
+#weixin
+https://mp.weixin.qq.com/s?__biz=MzA4Nzg5Nzc5OA==&mid=2651666035&idx=1&sn=01276c80695030ff77f34c493559e94b&chksm=8bcbf5dabcbc7ccc195c76bfa2ce919cdaa42930f2e65d2e2f3caf8f93e2e34ed127f5daa7fd&scene=0#rd
+
+https://mp.weixin.qq.com/s?__biz=MzI4NTA1MDEwNg==&mid=2650760735&idx=1&sn=22be06fd1f0264e2171553ba510cad9f&chksm=f3f9d38ac48e5a9cc30d57d413ae4ad5c83716661ae253832a772f56d5fd7bf9992d03c15272&scene=0#rd
+
+https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&mid=2653548665&idx=1&sn=c0d489dcacd0c7c05e579ed74c9050c9&chksm=813a61e1b64de8f7677783315c8f9a80cabe055c1473804fca7c9dce5d96401fbbe608135717&scene=0#rd
