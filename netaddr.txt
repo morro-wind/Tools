@@ -50,3 +50,10 @@ https://mp.weixin.qq.com/s?__biz=MzA4Nzg5Nzc5OA==&mid=2651666035&idx=1&sn=01276c
 https://mp.weixin.qq.com/s?__biz=MzI4NTA1MDEwNg==&mid=2650760735&idx=1&sn=22be06fd1f0264e2171553ba510cad9f&chksm=f3f9d38ac48e5a9cc30d57d413ae4ad5c83716661ae253832a772f56d5fd7bf9992d03c15272&scene=0#rd
 
 https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&mid=2653548665&idx=1&sn=c0d489dcacd0c7c05e579ed74c9050c9&chksm=813a61e1b64de8f7677783315c8f9a80cabe055c1473804fca7c9dce5d96401fbbe608135717&scene=0#rd
+
+
+#dns view
+
+#linux 集群
+https://www.ibm.com/developerworks/cn/linux/theme/cluster.html
+
