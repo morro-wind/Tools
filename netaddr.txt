@@ -51,5 +51,14 @@ https://mp.weixin.qq.com/s?__biz=MzI4NTA1MDEwNg==&mid=2650760735&idx=1&sn=22be06
 
 https://mp.weixin.qq.com/s?__biz=MzAwMDU1MTE1OQ==&mid=2653548665&idx=1&sn=c0d489dcacd0c7c05e579ed74c9050c9&chksm=813a61e1b64de8f7677783315c8f9a80cabe055c1473804fca7c9dce5d96401fbbe608135717&scene=0#rd
 
+<<<<<<< HEAD
 #服务发现：Zookeeper vs etcd vs Consul
 http://dockone.io/article/667
+=======
+
+#dns view
+
+#linux 集群
+https://www.ibm.com/developerworks/cn/linux/theme/cluster.html
+
+>>>>>>> 8750b77c8008731a2db112575d2d4e7caa3f132d
