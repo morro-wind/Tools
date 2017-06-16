@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# Simple consul init.d script conceived to work on Linux systems
+# as it does use of the /proc filesystem
+
+EXEC=/usr/local/bin/consul
+
+#Runs a Consul switches agent to server mode.
+AGENT="-server"
+CONF_DIR=/etc/consul.d
+DATA_DIR=/tmp/consul
+BIND=localhost
+CLIENT=localhost
+PIDFILE=/var/run/consul.pid
+NODE_NAME=""
+SYSLOG=
+
+case "$1" in
+    start)
+        if [ -f $PIDFILE ]
+        then
+            echo "$PIDFILE exists, process is already running or crashed"
+        else
+            echo "Starting consul server..."
+            nohup $EXEC agent -server -bootstrap -data-dir=${DATA_DIR} \
+                -node=$NODE_NAME -bind=$BIND -client=$CLIENT \
+                -pid-file=$PIDFILE -ui 1>$LOG/consul.log 2>$LOG/consul.err &
+        fi
+        ;;
+    stop)
+        if [ ! -f $PIDFILE ]
+        then
+            echo "$PIDFILE does not exist, process is not running"
+        else
+            PID=$(cat $PIDFILE)
+            echo "Stopping ..."
+            kill $PID
+            while [ -x /proc/${PID} ]
+            do
+                echo "Waiting for consul to shudown ..."
+                sleep 1
+            done
+            echo "consul stopped"
+        fi
+        ;;
+    *)
+        echo "Please use start or stop as firest argument"
+        ;;
+esac
