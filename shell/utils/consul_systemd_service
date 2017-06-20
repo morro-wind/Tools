@@ -1,0 +1,17 @@
+[Unit]
+Description=consul server daemon
+Before=docker.service
+
+[Service]
+PIDFile=/var/run/consul.pid
+EnvironmentFile=/etc/sysconfig/consul.conf
+ExecStart=/usr/bin/consul agent $SERVER -config-dir=${CONSUL_CONF} \
+-data-dir=${CONSUL_DATA} -bind=${SERVER_BIND} -client=${CLIENT_BIND} \
+-pid-file=${PID} $UI\
+2>${CONSUL_LOG}/consul.err 1>${CONSUL_LOG}/consul.log 
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

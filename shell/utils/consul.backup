@@ -1,0 +1,27 @@
+cat /etc/sysconfig/consul
+#CONF_DIR="/etc/consul.d"
+DATA_DIR=/usr/mpsp/consul/data
+BIND="10.10.67.56"
+CLIENT=0.0.0.0
+LOG_DIR=/usr/log/consul
+PID_FILE=/var/run/consul.pid
+OPTIONS="agent -server -bootstrap \
+-data-dir=/usr/mpsp/consul/data -bind=10.10.67.56 \
+-client=0.0.0.0 -config-dir=/etc/consul.d \
+-pid-file=/var/run/consul.pid"
+[root@localhost ~]# cat /lib/systemd/system/consul.service
+[Unit]
+Description=consul server daemon
+Before=docker.service
+
+[Service]
+PIDFile=/var/run/consul.pid
+EnvironmentFile=/etc/sysconfig/consul
+ExecStart=/usr/mpsp/consul/bin/consul $OPTIONS 2>${LOG_DIR}/consul.error 1>${LOG_DIR}/consul.log &
+ExecReload=/bin/kill -s HUP $MAINPID
+#ExecStop=/bin/kill -s QUIT $MAINPID
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+
