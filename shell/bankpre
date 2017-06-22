@@ -10,65 +10,60 @@ USER_HOME=/usr/mpsp
 
 do_start()
 {
-    for i in `find $USER_HOME -path ${USER_HOME}/appBakeup -prune -o -path \
-        ${USER_HOME}/shengchan_bak -prune -path ${USER_HOME}/lazy -prune -path \
-        ${USER_HOME}/yunxing -prune -o -name "serv.sh" -exec dirname {} \;`
+    for i in `find $USER_HOME -path ${USER_HOME}/appBakeup -prune -o \
+        -path ${USER_HOME}/shengchan_bak -prune -o \
+        -path ${USER_HOME}/lazy -prune -o \
+        -path ${USER_HOME}/yunxing -prune -o -name "serv.sh" -exec dirname {} \;`
     do
-        cd $i
-        sed -i '/^tail/s/^/#/' serv.sh
-    	./serv.sh 2>/dev/null
+        sed -i '/^tail/s/^/#/' ${i}/serv.sh
+    	/bin/bash ${i}/serv.sh 2>/dev/null
     done
 
-    for i in `find ${USER_HOME}/ -path ${USER_HOME}/appBakeup -prune -o -path \
-        ${USER_HOME}/shengchan_bak -prune -path ${USER_HOME}/lazy -prune -path \
-        ${USER_HOME}/yunxing -prune -o -name "run.sh" -exec dirname {} \;`
+    for i in `find ${USER_HOME} -path ${USER_HOME}/appBakeup -prune -o \
+        -path ${USER_HOME}/shengchan_bak -prune -o \
+        -path ${USER_HOME}/lazy -prune -o \
+        -path ${USER_HOME}/yunxing -prune -o -name "run.sh" -exec dirname {} \;`
     do
-        cd $i
-        sed -i '/^tail/s/^/#/' run.sh
+        sed -i '/^tail/s/^/#/' ${i}/run.sh
 
-        if [ -f runv.sh ];then
-          sed -i '/^tail/s/^/#/' runv.sh
-        fi
-
-        if [ -f runs ];then
-          ./runs
+        [ -f ${i}/runv.sh ] && '/^tail/s/^/#/' ${i}/runv.sh
+        [ -f ${i}/runs ] && /bin/bash ${i}/runs
           sleep 3
-        fi
-
-        if [ -f stop.sh ];then
-          ./stop.sh
+        [ -f ${i}/stop.sh ] && /bin/bash ${i}/stop.sh
           sleep 3
-        fi
-
-        ./run.sh 2>/dev/null
+        [ -f ${i}/run.sh ] && /bin/bash ${i}/run.sh 2>/tmp/bankper-err.log
     done
 
     for i in `find ${USER_HOME}/run/ -regex ".*d$" -exec basename {} \;`
     do
         cd ${USER_HOME}/run
-        ./$i 2>/dev/null
+        /bin/bash $i 2>/dev/null
     done
 }
 
 do_stop()
 {
-    cd ${USER_HOME}
-    for i in `find ./ -path ./appBakeup -prune -o -path ./shengchan_bak -prune -path ./lazy -prune -path ./yunxing -prune -o -name "serv.sh" -exec dirname {} \;`
+    for i in `find ${USER_HOME} -path ${USER_HOME}/appBakeup -prune -o \
+        -path ${USER_HOME}/shengchan_bak -prune -o \
+        -path ${USER_HOME}/lazy -prune -o \
+        -path ${USER_HOME}/yunxing -prune -o -name "serv.sh" -exec dirname {} \;`
     do
-        cd ${USER_HOME}/$i
-        ./unserv.sh 2>/dev/null
+        cd $i
+        /bin/bash unserv.sh 2>/dev/null
     done
 
-    for i in `find ./ -path ./appBakeup -prune -o -path ./shengchan_bak -prune -path ./lazy -prune -path ./yunxing -prune -o -name "run.sh" -exec dirname {} \;`
+    for i in `find ${USER_HOME} -path ${USER_HOME}/appBakeup -prune -o \
+        -path ${USER_HOME}/shengchan_bak -prune -o \
+        -path ${USER_HOME}/lazy -prune -o \
+        -path ${USER_HOME}/yunxing -prune -o -name "run.sh" -exec dirname {} \;`
     do
-        cd ${USER_HOME}/$i
-        ./runs 2>/dev/null
+        cd $i
+        /bin/bash runs 2>/dev/null
     done
 
     for i in `find ${USER_HOME}/run/ -regex ".*s$" -exec basename {} \;`
     do
-        cd ${USER_HOME}/run
-        ./$i 2>/dev/null
+        /bin/bash $i 2>/dev/null
     done
 }
 
