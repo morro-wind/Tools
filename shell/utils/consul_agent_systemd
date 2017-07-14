@@ -1,0 +1,17 @@
+[Unit]
+Description=consul agent daemon
+Before=docker.service
+
+[Service]
+PIDFile=/var/run/consul-agent.pid
+EnvironmentFile=/etc/sysconfig/consul.conf
+ExecStart=/usr/bin/consul agent -data-dir=/usr/mpsp/consul/node -node=agent-on \
+-bind=127.0.0.1 -config-dir=/usr/mpsp/consul/consul.d \
+-pid-file=/var/run/consul-agent.pid \
+2>/usr/mpsp/consul/log/consul.err 1> /usr/mpsp/consul/log/consul.log
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
