@@ -9,7 +9,7 @@ export LANG=zh_CN.UTF-8
 
 # Set variable
 DATE=$1
-[ ${DATE} == "" ] && DATE=`date +%Y%m%d`
+[[ -z ${DATE} ]] && DATE=`date +%Y%m%d`
 DB_NAME=""
 BACK_PATH=""
 SVN_PATH="./"
