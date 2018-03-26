@@ -6,6 +6,10 @@
 
 # Set language env
 export LANG=zh_CN.UTF-8
+# Modify path contains space issue
+SAVE_IFS=$IFS
+IFS='
+'
 
 # Set variable
 DATE=$1
@@ -33,7 +37,7 @@ fi
 
 # Getpath or filename
 cd ${SVN_PATH}
-FIND="find ${SVN_PATH}/${DATE} -type f -iname *.sql"
+#FIND="find ${SVN_PATH}/${DATE} -type f -iname *.sql"
 EXEC="${PSQL_BIN} -h ${PSQL_HOST} -p ${PSQL_PORT} -U ${PSQL_USER} \
     password=${PSQL_PASSWD} -L ${LOG_PATH}"
 # Auto input pwd
@@ -51,7 +55,7 @@ if [ -d "${SVN_PATH}/${DATA}" ]; then
     # http://blog.csdn.net/badly9/article/details/50386259
     #pg_dump ${DB_NAME} | gzip > ${BACK_PATH}/${DB_NAME}_${DATE}.gz
 
-    for SQLIST in `${FIND}`
+    for SQLIST in `find ${SVN_PATH}/${DATE} -type f -iname "*.sql"`
     do
         DB_NAME=`grep -Ev "^--|^$" ${SQLIST} | awk -F '.' '{ print $1 }' | awk \
             '{ print $NF }' | head -n 1 | sed 's/"//g'`
@@ -67,7 +71,10 @@ if [ -d "${SVN_PATH}/${DATA}" ]; then
         esac
         echo $DB_NAME
 
-        ${EXEC} "password=${PSQL_PASSWD}" -f ${SQLIST}
+        ${EXEC} "password=${PSQL_PASSWD}" -d ${DB_NAME} -f ${SQLIST}
+
+        # Copy
+        #cat ${SQLIST} >> ${VSQL_PATH}/${VER}_${DB_NAME}.sql
         #while read line
         #do
             #${EXEC} < ${SQLIST} > ${LOGPATH}/${DATE}.log 2>$1
