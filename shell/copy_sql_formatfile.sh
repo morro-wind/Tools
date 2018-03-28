@@ -55,11 +55,11 @@ do
     if [ -z ${START} ]; then
         #Filtration Windows format Enter  = ctrl + v ctrl+m
         #Filtration grep "" | dos2unix filename | sed 's///g' filename
-        SCHEMA_NAME=`grep -Ev "^--|^$|^" ${SQLIST} | awk -F '.' '{ print $1 }'\
+        SCHEMA_NAME=`sed "s///g;s/^ //g" ${SQLIST} | grep -Ev "^--|^$|^" | awk -F '.' '{ print $1 }'\
             | awk '{ print $NF }' | head -n 1 | sed 's/"//g'`
     else
         END=`grep -n "\*/" ${SQLIST} | head -n 1 | awk -F ":" '{ print $1 }'`
-        SCHEMA_NAME=`sed "${START},${END}"d ${SQLIST} | grep -Ev "^--|^$|/\*|^"\
+        SCHEMA_NAME=`sed "${START},${END}d;s///g;s/^ //g" ${SQLIST} | grep -Ev "^--|^$|/\*|^"\
             | awk -F '.' '{ print $1 }' | awk '{ print $NF }' | head -n 1\
             | sed 's/"//g'`
     fi
