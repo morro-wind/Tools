@@ -19,6 +19,7 @@ yum install -y gcc gcc-c++ make cmake ncurses-devel wget
 访问https://www.boost.org/users/history/ 查找对应版本下载并解压
 可通过修改boost/version.hpp文件内的版本标记，使配置编译通过，但后期会对程序造成何种影响未知
 
+cmake 参数说明https://dev.mysql.com/doc/refman/5.7/en/source-configuration-options.html
 mysql配置编译
 cd /src/mysql-5.7.21
 mkdir bld
@@ -35,8 +36,28 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/opt/mysql \
 -DWITH_BOOST=/opt/src/boost_1_59_0
 
 预编译
-make `grep processor /proc/cpuinfo | wc -l`
+make -j `grep processor /proc/cpuinfo | wc -l`
+
+编译过程中有报错，报错为not found rpcgen
+rpcgen 包含在glibc 包中，因系统环境glibc包有版本冲突，重新安装了glibc，但安装不完全，导致缺少rpcgen，升级glibc，包含glibc-common、glibc-header、glibc-devel，应该只要升级安装glibc-common即可，我将所有的都升级为统一的版本了
+下载glibc rpm升级包
+rpm -Uvh glic.rpm
+清除编译文件，重新编译
+make clean
+make -j `grep processor /proc/cpuinfo | wc -l`
 编译安装
 make install
 
 配置my.cn
+
+
+
+php5.6
+
+./configure --prefix=/opt/php --with-config-file-path=/opt/conf/php --with-mysql --with-mysqli \
+--with-config-file-scan-dir=/opt/conf/php/php.d --enable-fpm --with-gd --with-iconv \
+--with-zlib --enable-xml --enable-inline-optimization --with-openssl --enable-pcntl \
+--enable-zip --with-curl --with-bz2 --with-jpeg-dir --with-png-dir --enable-mbstring --with-freetype-dir --with-gettext --enable-sockets --enable-bcmath --with-ldap --with-ldap-sasl
+
+make -j `grep processor /proc/cpuinfo | wc -l`
+make install
