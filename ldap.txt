@@ -1,0 +1,61 @@
+yum install gcc gcc-c++ libtool-ltdl-devel openssl-devel
+
+
+Libraries have been installed in:
+   /DATA/opt/DB/lib
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the `-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the `LD_RUN_PATH' environment variable
+     during linking
+   - use the `-Wl,-rpath -Wl,LIBDIR' linker flag
+   - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+
+./configure --prefix=/usr/local/openldap-2.4.44 --enable-syslog --enable-modules --enable-debug --with-tls CPPFLAGS=-I/usr/local/berkeleydb-5.1.29/include/ LDFLAGS=-L/usr/local/berkeleydb-5.1.29/lib/
+
+
+
+./configure --prefix=/DATA/opt/openldap --sysconfdir=/DATA/conf/ --enable-bdb=no --enable-hdb=no --enable-accesslog=yes --enable-auditlog=yes --enable-syslog --enable-modules --enable-debug --with-tls 
+
+
+
+   80  2018-04-19 16:38:44 >  openssl req -new -x509 -nodes -out slapdcert.pem -keyout slapdkey.pem -days 365
+   81  2018-04-19 16:39:06 >  ls
+   82  2018-04-19 16:40:48 >  openssl genrsa -out ldaps.key 2048
+   83  2018-04-19 16:41:43 >  openssl req -out ldaps.csr -key ldaps.key -new
+   84  2018-04-19 16:45:18 >  openssl x509 -req -in ldaps.csr -CA slapdcert.pem -CAcreateserial -out ldaps.crt -days 365
+   85  2018-04-19 16:45:24 >  ls
+   86  2018-04-19 16:46:48 >  ll
+   87  2018-04-19 16:50:06 >  openssl x509 -req -in ldaps.csr -CA slapdcert.pem -CAkey slapdkey.pem -CAcreateserial -out ldaps.crt -days 365
+
+https://www.digitalocean.com/community/tutorials/understanding-the-ldap-protocol-data-hierarchy-and-entry-components
+
+ldap-account-manager
+https://jaist.dl.sourceforge.net/project/lam/LAM/6.3/ldap-account-manager-6.3.tar.bz2
+phpldapadmin
+
+如果遇到如下错误：
+	
+#ldapwhoami -v -x -Z
+ldap_initialize( )
+ldap_start_tls: Can’t contact LDAP server (-1)
+additional info: TLS error -8172:Peer’s certificate issuer has been marked as not trusted by the user.
+ldap_sasl_bind(SIMPLE): Can’t contact LDAP server (-1)
+
+在客户端的ldap.conf中加了“TLS_REQCERT allow”，重启nslcd 后出现了正常结果
+
+	This base cannot be created with PLA
+	
+	Fatal Error: Cannot redeclare password hash() in /var/www/html/phpldapadmin/lib/functions.php on line 2236
+	
+	https://www.linuxquestions.org/questions/linux-server-73/phpldapadmin-on-ubuntu-14-04-wirh-openldap-4175506822/
+	http://permalink.gmane.org/gmane.comp.ldap.davedap/4937
+	http://forums.debian.net/viewtopic.php?f=5&t=111508
+	
+	
+	
+	TLS: can't accept: error:14094418:SSL routines:SSL3_READ_BYTES:tlsv1 alert unknown ca.
