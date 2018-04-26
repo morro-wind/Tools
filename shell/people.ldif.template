@@ -1,0 +1,17 @@
+dn: uid=USERID,ou=People,dc=morro-wind,dc=com
+uid: USERID
+ou: GROUP
+cn: NAME
+objectClass: account
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword: EMAIL
+shadowLastCh ange: 16497
+shadowMin: 0
+shadowMax: 99999
+shadowWaring: 7
+#loginShell: /bin/bash
+#uidNumber: 502
+#gitNumber:502
+#homeDirectory: /home/USER
+
