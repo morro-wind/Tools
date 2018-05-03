@@ -1,0 +1,54 @@
+# example.com
+dn: dc=example,dc=com
+dc: example
+o: TravelSky.Inc
+objectClass: dcObject
+objectClass: organization
+
+# Manager,example.com
+dn: cn=Manager,dc=example,dc=com
+cn: Manager
+description: LDAP administrator
+objectClass: organizationalRole
+objectClass: top
+roleOccupant: dc=example,dc=com
+
+# People,example.com
+dn: ou=People,dc=example,dc=com
+ou: People
+objectClass: top
+objectClass: organizationalUnit
+
+# Groups,example.com
+dn: ou=Group,dc=example,dc=com
+ou: Group
+objectClass: top
+objectClass: organizationalUnit
+
+#dn: ou=Policies,dc=example,dc=com
+#objectClass: organizationalUnit
+#objectClass: top
+#ou: Policies
+
+#dn: cn=default,ou=Policies,dc=example,dc=com
+#cn: default
+#objectClass: pwdPolicy
+#objectClass: person
+#objectClass: top
+#pwdAllowUserChange: TRUE
+#pwdAttribute: userPassword
+#pwdCheckQuality: 2
+#pwdExpireWarning: 600
+#pwdFailureCountInterval: 30
+#pwdGraceAuthNLimit: 5
+#pwdInHistory: 5
+#pwdLockout: TRUE
+#pwdLockoutDuration: 0
+#pwdMaxAge: 0
+#pwdMaxFailure: 5
+#pwdMinAge: 0
+#pwdMinLength: 5
+#pwdMustChange: FALSE
+#pwdSafeModify: FALSE
+#pwdReset: TRUE
+#sn: dummy value

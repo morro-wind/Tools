@@ -1,0 +1,14 @@
+dn: uid=USERID,ou=People,dc=example,dc=com
+uid: USERID
+ou: People
+cn: CNAME
+sn: SNAME
+objectClass: inetOrgPerson
+objectClass: shadowAccount
+shadowInactive: 10
+shadowLastChange: 17647
+shadowMax: 60
+shadowWarning: 10
+userPassword: PASSWD
+mail: EMAIL
+
