@@ -1,4 +1,5 @@
 #!/bin/bash
+# mpstat -P ALL
 user_time() {
     USER_TIME=`vmstat | awk '{ print $13 }' | sed -n '$p'`
     echo $USER_TIME
