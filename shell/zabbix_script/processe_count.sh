@@ -5,14 +5,14 @@
 [[ $1 == thread ]] && PORT=$2 && PID=`netstat -lntp | grep -w ${PORT} | awk '{ print $NF }' \
     | awk -F "/" '{ print $1 }'`
 
-# When $1 is thread, default TH value is $2,if $2 is null then TH is null
+# When $1 is thread, default ARGS value is $2,if $2 is null then ARGS is null
 # The TH value is null, default get all process number
 # If TH value is m, then get all thread in process number
-[[ $1 == process ]] && TH=$2
+[[ $1 == process ]] && ARGS=$2
 
 # Get process or thread in process all
 total_thread() {
-    echo $((`ps aux${TH} | wc -l` - 3))
+    echo $((`ps aux${ARGS} | wc -l` - 3))
 }
 
 # Get thread in process
