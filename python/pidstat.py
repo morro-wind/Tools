@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 
 import commands
 import sys
@@ -8,14 +8,18 @@ appport = sys.argv[1]
 pidargs = sys.argv[2]
 
 (status, PID) = commands.getstatusoutput("sudo netstat -lntp | grep -w %s |\
-        awk '{print $NF}' | awk -F / '{print $1}'" % appport)
+        awk '{print $NF}' | awk -F / '{print $1}' | sed -n '$p'" % appport)
+#PATH = commands.getstatusoutput("sudo echo $PATH")
+#print(PATH)
 
 def change_ke(cmd):
     (status,result_tmp) = commands.getstatusoutput(cmd)
+    #print(result_tmp)
     result_tmp = result_tmp.split("\n")
     result_key = result_tmp[0].split()
     result_values = result_tmp[1].split()
     result = dict(zip(result_key, result_values))
+    #print(result)
     return result
 
 # Report I/O statistics.
@@ -34,25 +38,27 @@ if pidargs in ('rd', 'wr', 'ccwr'):
 
 # Report page faults and memory utilization
 elif pidargs in ('minflt', 'majflt', 'VSZ', 'RSS', 'MEM'):
-    cmd_util = "sudo pidstat -lr -p " + PID + " | sed -n '3,$p' | sed 's/\/s\|%//g'"
+    cmd_util = "pidstat -lr -p " + PID + " | sed -n '3,$p' | sed 's/\/s\|%//g'"
     util = change_ke(cmd_util)
     print util.get(pidargs)
 
 # Report CPU utilization
 elif pidargs in ('usr', 'cpu', 'system', 'guest', 'CPU'):
-    cmd_util = "sudo pidstat -lu -p " + PID + " | sed -n '3,$p' | \
+    cmd_util = "pidstat -lu -p " + PID + " | sed -n '3,$p' | \
             sed 's/%CPU/cpu/g' | sed 's/\%//g'"
     util = change_ke(cmd_util)
     print util.get(pidargs)
 
 # Report stack utilization
+'''
 elif pidargs in ('StkSize', 'StkRef'):
-    cmd_util = "sudo pidstat -ls -p %s | sed -n '3,$p'" % PID
+    cmd_util = "pidstat -ls -p %s | sed -n '3,$p'" % PID
     util = change_ke(cmd_util)
     print util.get(pidargs)
 
 # Report values of some kernel tables
 elif pidargs in ('threads', 'fd-nr'):
-    cmd_util = "sudo pidstat -lv -p %s | sed -n '3,$p'" % PID
+    cmd_util = "pidstat -lv -p %s | sed -n '3,$p'" % PID
     util = change_ke(cmd_util)
     print util.get(pidargs)
+'''
