@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-06-21T07:17:33Z</date>
+    <date>2018-06-22T09:21:16Z</date>
     <groups>
         <group>
             <name>Application UAT</name>
@@ -26,6 +26,9 @@
                 </application>
                 <application>
                     <name>Page Faults And Memory</name>
+                </application>
+                <application>
+                    <name>Process Information</name>
                 </application>
                 <application>
                     <name>Stack Utilization</name>
@@ -120,11 +123,11 @@ This may occur when the task truncates some dirty pagecache. In this case, some 
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>app_util[8380,fd-nr]</key>
+                    <key>app_util[8380,FDSize]</key>
                     <delay>30s</delay>
                     <history>90d</history>
                     <trends>365d</trends>
-                    <status>1</status>
+                    <status>0</status>
                     <value_type>3</value_type>
                     <allowed_hosts/>
                     <units/>
@@ -143,9 +146,13 @@ This may occur when the task truncates some dirty pagecache. In this case, some 
                     <publickey/>
                     <privatekey/>
                     <port/>
-                    <description>Number of file descriptors associated with current task</description>
+                    <description>Number of file descriptor slots currently allocated.</description>
                     <inventory_link>0</inventory_link>
-                    <applications/>
+                    <applications>
+                        <application>
+                            <name>Process Information</name>
+                        </application>
+                    </applications>
                     <valuemap/>
                     <logtimefmt/>
                     <preprocessing/>
@@ -399,6 +406,49 @@ This may occur when the task truncates some dirty pagecache. In this case, some 
                     <master_item/>
                 </item>
                 <item>
+                    <name>Current state of the process</name>
+                    <type>0</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>app_util[8380,State]</key>
+                    <delay>30s</delay>
+                    <history>90d</history>
+                    <trends>0</trends>
+                    <status>0</status>
+                    <value_type>1</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description>Current state of the process.  One of &quot;R (running)&quot;,&#13;
+                &quot;S (sleeping)&quot;, &quot;D (disk sleep)&quot;, &quot;T (stopped)&quot;, &quot;T (tracing&#13;
+                stop)&quot;, &quot;Z (zombie)&quot;, or &quot;X (dead)&quot;.</description>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Process Information</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing/>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
                     <name>used as stack</name>
                     <type>0</type>
                     <snmp_community/>
@@ -427,47 +477,6 @@ This may occur when the task truncates some dirty pagecache. In this case, some 
                     <privatekey/>
                     <port/>
                     <description>The amount of memory in kilobytes used as stack, referenced by the task</description>
-                    <inventory_link>0</inventory_link>
-                    <applications>
-                        <application>
-                            <name>Stack Utilization</name>
-                        </application>
-                    </applications>
-                    <valuemap/>
-                    <logtimefmt/>
-                    <preprocessing/>
-                    <jmx_endpoint/>
-                    <master_item/>
-                </item>
-                <item>
-                    <name>reserved for stack</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
-                    <key>app_util[8380,StkSize]</key>
-                    <delay>30s</delay>
-                    <history>90d</history>
-                    <trends>365d</trends>
-                    <status>1</status>
-                    <value_type>3</value_type>
-                    <allowed_hosts/>
-                    <units>kilobytes</units>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <description>The amount of memory in kilobytes reserved for the task as stack, but not necessarily used.</description>
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
@@ -526,11 +535,11 @@ This may occur when the task truncates some dirty pagecache. In this case, some 
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>app_util[8380,threads]</key>
+                    <key>app_util[8380,Threads]</key>
                     <delay>30s</delay>
                     <history>90d</history>
                     <trends>365d</trends>
-                    <status>1</status>
+                    <status>0</status>
                     <value_type>3</value_type>
                     <allowed_hosts/>
                     <units/>
@@ -551,7 +560,11 @@ This may occur when the task truncates some dirty pagecache. In this case, some 
                     <port/>
                     <description>Number of threads associated with current task</description>
                     <inventory_link>0</inventory_link>
-                    <applications/>
+                    <applications>
+                        <application>
+                            <name>Process Information</name>
+                        </application>
+                    </applications>
                     <valuemap/>
                     <logtimefmt/>
                     <preprocessing/>
@@ -592,6 +605,88 @@ Note that this field does NOT include time spent running a virtual processor.</d
                     <applications>
                         <application>
                             <name>Application CPU utilization</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing/>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Peak virtual memory size</name>
+                    <type>0</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>app_util[8380,VmPeak]</key>
+                    <delay>30s</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units>kilobytes</units>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description>Peak virtual memory size</description>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Page Faults And Memory</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing/>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Size of Stack</name>
+                    <type>0</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>app_util[8380,VmStk]</key>
+                    <delay>30s</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units>kilobytes</units>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description>The amount of memory in kilobytes reserved for the task as stack, but not necessarily used.</description>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Stack Utilization</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -798,6 +893,28 @@ Note that this field does NOT include time spent running a virtual processor.</d
                             <sort_triggers>0</sort_triggers>
                             <resource>
                                 <name>App Memory used Percentage</name>
+                                <host>Template App manager Service</host>
+                            </resource>
+                            <max_columns>3</max_columns>
+                            <application/>
+                        </screen_item>
+                        <screen_item>
+                            <resourcetype>0</resourcetype>
+                            <width>500</width>
+                            <height>100</height>
+                            <x>1</x>
+                            <y>2</y>
+                            <colspan>1</colspan>
+                            <rowspan>1</rowspan>
+                            <elements>0</elements>
+                            <valign>0</valign>
+                            <halign>0</halign>
+                            <style>0</style>
+                            <url/>
+                            <dynamic>0</dynamic>
+                            <sort_triggers>0</sort_triggers>
+                            <resource>
+                                <name>Process Information</name>
                                 <host>Template App manager Service</host>
                             </resource>
                             <max_columns>3</max_columns>
@@ -1019,6 +1136,30 @@ Note that this field does NOT include time spent running a virtual processor.</d
                         <key>app_util[8380,VSZ]</key>
                     </item>
                 </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>2774A4</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template App manager Service</host>
+                        <key>app_util[8380,VmPeak]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>3</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>A54F10</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template App manager Service</host>
+                        <key>app_util[8380,VmStk]</key>
+                    </item>
+                </graph_item>
             </graph_items>
         </graph>
         <graph>
@@ -1049,6 +1190,50 @@ Note that this field does NOT include time spent running a virtual processor.</d
                     <item>
                         <host>Template App manager Service</host>
                         <key>app_util[8380,MEM]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Process Information</name>
+            <width>900</width>
+            <height>200</height>
+            <yaxismin>0.0000</yaxismin>
+            <yaxismax>100.0000</yaxismax>
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0000</percent_left>
+            <percent_right>0.0000</percent_right>
+            <ymin_type_1>0</ymin_type_1>
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>1A7C11</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template App manager Service</host>
+                        <key>app_util[8380,FDSize]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>F63100</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template App manager Service</host>
+                        <key>app_util[8380,Threads]</key>
                     </item>
                 </graph_item>
             </graph_items>
