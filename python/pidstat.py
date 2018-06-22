@@ -9,17 +9,13 @@ pidargs = sys.argv[2]
 
 (status, PID) = commands.getstatusoutput("sudo netstat -lntp | grep -w %s |\
         awk '{print $NF}' | awk -F / '{print $1}' | sed -n '$p'" % appport)
-#PATH = commands.getstatusoutput("sudo echo $PATH")
-#print(PATH)
 
 def change_ke(cmd):
     (status,result_tmp) = commands.getstatusoutput(cmd)
-    #print(result_tmp)
     result_tmp = result_tmp.split("\n")
     result_key = result_tmp[0].split()
     result_values = result_tmp[1].split()
     result = dict(zip(result_key, result_values))
-    #print(result)
     return result
 
 # Report I/O statistics.
@@ -48,6 +44,12 @@ elif pidargs in ('usr', 'cpu', 'system', 'guest', 'CPU'):
             sed 's/%CPU/cpu/g' | sed 's/\%//g'"
     util = change_ke(cmd_util)
     print util.get(pidargs)
+
+# Report Threads and
+elif pidargs in ('Threads', 'State', 'VmPeak', 'VmStk', 'FDSize'):
+    cmd_util = "grep -iw %s /proc/%s/status | awk '{print $2}'" % (pidargs, PID)
+    (status,result_tmp) = commands.getstatusoutput(cmd_util)
+    print(result_tmp)
 
 # Report stack utilization
 '''
