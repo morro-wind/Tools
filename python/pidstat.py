@@ -49,7 +49,11 @@ elif pidargs in ('usr', 'cpu', 'system', 'guest', 'CPU'):
 elif pidargs in ('Threads', 'State', 'VmPeak', 'VmStk', 'FDSize'):
     cmd_util = "grep -iw %s /proc/%s/status | awk '{print $2}'" % (pidargs, PID)
     (status,result_tmp) = commands.getstatusoutput(cmd_util)
-    print(result_tmp)
+    if pidargs in ('VmPeak', 'VmStk'):
+        result_tmp = result_tmp
+        print(result_tmp)
+    else:
+        print(result_tmp)
 
 # Report stack utilization
 '''
