@@ -1,6 +1,7 @@
 #!/bin/env python
 # Author: lie
 # Maintainer: lie
+# https://redis.io/commands/info
 import sys
 import redis
 # Int / keep float
@@ -18,6 +19,9 @@ def Connect():
 # Test redis server status
 def Ping():
     return Connect().ping()
+
+def DBSize():
+    print Connect().dbsize()
 
 def Info(args):
     conn = Connect()
@@ -54,6 +58,8 @@ if __name__ == '__main__':
             print HitRate()
         elif redis_fields in "ping":
             print Ping()
+        elif redis_fields in "dbsize":
+            DBSize()
         else:
             print Info(redis_fields)
 
