@@ -3,6 +3,7 @@
 # Maintainer: lie
 # https://redis.io/commands/info
 import sys
+import time
 import redis
 # Int / keep float
 #form __future__ import division
@@ -45,6 +46,15 @@ def HitRate():
     # round(a,2) keep float .02
     return round(hitrate, 2)
 
+# CPU Utilization
+def CPU():
+    conn = Connect()
+    cpu_before = conn.info()["used_cpu_sys"]
+    time.sleep(20)
+    cpu_now = conn.info()["used_cpu_sys"]
+    utilization = (cpu_now - cpu_before) * 100 / 20
+    print '%.2f' % utilization
+
 if __name__ == '__main__':
     if len(sys.argv) != 4:
         print "Usage: python redis_host redis_port fields"
@@ -60,6 +70,8 @@ if __name__ == '__main__':
             print Ping()
         elif redis_fields in "dbsize":
             DBSize()
+        elif redis_fields in "cpu_utilization":
+            CPU()
         else:
             print Info(redis_fields)
 
