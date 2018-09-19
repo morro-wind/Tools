@@ -1,0 +1,11 @@
+{
+    "server":"server_ip",
+    "port_password":{
+        "443":"password1",
+        "444":"password2"
+    },
+    "timeout":600,
+    "method":"aes-256-cfb",
+    "auth":"true",
+    "pid-file":"/var/run/sss.pid"
+}
