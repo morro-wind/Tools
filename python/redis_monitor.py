@@ -49,10 +49,10 @@ def HitRate():
 # CPU Utilization
 def CPU():
     conn = Connect()
-    cpu_before = conn.info()["used_cpu_sys"]
-    time.sleep(20)
-    cpu_now = conn.info()["used_cpu_sys"]
-    utilization = (cpu_now - cpu_before) * 100 / 20
+    cpu_before = conn.info()["used_cpu_sys"] + conn.info()["used_cpu_user"]
+    time.sleep(40)
+    cpu_now = conn.info()["used_cpu_sys"] + conn.info()["used_cpu_user"]
+    utilization = (cpu_now - cpu_before) * 100 / 40
     print '%.2f' % utilization
 
 if __name__ == '__main__':
