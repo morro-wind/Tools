@@ -1,0 +1,13 @@
+python
+centos
+django flask tornado celery luigi
+mysql mongodb redis
+zabbix api
+lvs nginx resin redis kafka zk
+hadoop spark hive impala flume sqoop
+openstack docker swarm k8s
+html javascript bootstrap jquery
+ansible salt mysql falcon zabbix
+elasticsearch grafana spark
+open-falcon prometheus
+熟悉OWASP TOP 10常见WEB安全漏洞原理和修复方案
