@@ -3,7 +3,8 @@
 BIN=/DATA/opt/app/bin
 BACKUP_DIR=/DATA/backup
 DATE=`date +%Y%m%d`
-IP=`ip addr show eth0 | grep -w inet | awk -F / '{print $1}' | awk '{print
+IP_BIN="`which ip`"
+IP=`${IP_BIN} addr show eth0 | grep -w inet | awk -F / '{print $1}' | awk '{print
 $NF}'`
 [[ ! -d ${BACKUP_DIR} ]] && mkdir ${BACKUP_DIR}
 #[[ ! -x ${BIN}/pg_dumpall ]] && echo "${BIN}/pg_dumpall not except" && exit 1
