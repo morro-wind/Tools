@@ -1,0 +1,40 @@
+#!/bin/env bash
+# chkconfig:   - 85 15
+
+BIN=/usr/bin
+DESTIP1=192.168.10.1
+DESTIP2=192.168.10.2
+LOGDIR=/tmp
+TIMEOUT=5
+PACKETSIZE=100
+PID1=/tmp/ping1.pid
+PID2=/tmp/ping2.pid
+
+do_start() {
+    nohup ping -s $PACKETSIZE -W $TIMEOUT $DESTIP1 | perl -nle \
+        'use Time::Piece; BEGIN {$|++} print localtime->datetime, " ", "Src:10.240.1.20  " , $_' >> ${LOGDIR}/${DESTIP1}-`date +%F`.log & echo $! > $PID1
+
+    nohup ping -s $PACKETSIZE -W $TIMEOUT $DESTIP2 | perl -nle \
+        'use Time::Piece; BEGIN {$|++} print localtime->datetime, " ", "Src:10.240.1.20  " , $_' >> ${LOGDIR}/${DESTIP2}-`date +%F`.log & echo $! > $PID2
+}
+
+do_stop() {
+    [[ -s $PID1 ]] && kill `cat $PID1` && rm $PID1
+    [[ -s $PID2 ]] && kill `cat $PID2` && rm $PID2
+}
+
+case "$1" in
+    start)
+        do_start
+        ;;
+    stop)
+        do_stop
+        ;;
+    restart)
+        do_stop
+        do_start
+        ;;
+    *)
+    echo "$0 start | stop"
+esac
+
