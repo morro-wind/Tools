@@ -1,0 +1,4 @@
+[app-servers]
+app1
+[web-servers]
+webserver1

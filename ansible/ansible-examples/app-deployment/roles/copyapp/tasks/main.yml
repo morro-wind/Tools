@@ -1,0 +1,4 @@
+---
+# scp 20 war from za
+- name: scp {{ app_name }}
+  shell: /usr/bin/scp -P -i ec2-user@:/opt/app_pkg/production/za/{{ app_name }}.war {{ filesdir }}

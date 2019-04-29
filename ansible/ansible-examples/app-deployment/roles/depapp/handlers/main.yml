@@ -1,0 +1,6 @@
+---
+- name: stop {{ app_name }}
+  shell: {{ app_path }}/{{ app_name }}/bin/shutdown.sh
+
+- name: start {{ app_name }}
+  shell: nohup {{ app_path }}/{{ app_name }}/bin/startup.sh &

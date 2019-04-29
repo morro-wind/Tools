@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  vars:
+    app_name: app
+  roles:
+    - copyapp
+
+- hosts: app-services
+  # always, never, on_failed, on_unreachable, on_skipped
+  debugger: always
+  roles:
+    - depapp

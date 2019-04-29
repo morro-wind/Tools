@@ -1,0 +1,15 @@
+---
+- name: push {{ app_name }} file
+  copy:
+    src: "{{ app_name }}.war"
+    dest: "{{ app_path }}/webapps/"
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+
+- name: delete {{ app_name }}
+  file:
+    path: "{{ app_path }}/webapps/{{ app_name }}"
+    state: absent
+  notify: stop {{ app_name }}
+  notify: start {{ app_name }}
