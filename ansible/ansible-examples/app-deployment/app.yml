@@ -1,4 +1,6 @@
 ---
+# import_playbook: local.yml
+# local.yml in vars_files: env variable for group_vars file
 - hosts: localhost
   vars:
     app_name: app
