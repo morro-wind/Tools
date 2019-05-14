@@ -1,0 +1,25 @@
+# Systemd unit file for tomcat
+# 
+# To create clones of this service:
+# 1) By default SERVICE_NAME=tomcat. When cloned, the value must be defined 
+# before tomcat-sysd is called.
+# 2) Create /etc/sysconfig/${SERVICE_NAME} from /etc/sysconfig/tomcat
+# to override tomcat defaults
+
+[Unit]
+Description=Apache Tomcat Web Application Container JSVC wrapper
+#After=syslog.target network.target
+After=network.target
+
+[Service]
+#Type=forking
+Type=simple
+PIDFile=/opt/app/base/logs/catalina-daemon.pid
+EnvironmentFile=/opt/app/base/bin/setenv.sh
+#Environment="NAME=" "USE_JSVC=true"
+#EnvironmentFile=-/etc/sysconfig/tomcat
+ExecStart=/opt/app/apache-tomcat-8.5.40/bin/daemon.sh start
+ExecStop=/opt/app/apache-tomcat-8.5.40/bin/daemon.sh stop
+
+[Install]
+WantedBy=multi-user.target
