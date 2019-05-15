@@ -1,0 +1,8 @@
+- hosts: localhost
+  vars_files:
+    - /PATH/group_vars/$APPNAME
+  #debugger: on_failed
+  #vars:
+  #  app_name: quick-inv.war
+  roles:
+    - copyapp

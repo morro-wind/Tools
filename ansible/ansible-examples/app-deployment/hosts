@@ -1,4 +1,4 @@
-[app-servers]
-app1
-[web-servers]
-webserver1
+[app1]
+app1host ansible_ssh_host=127.0.0.1
+[app2]
+app2host ansible_ssh_host=127.0.0.1

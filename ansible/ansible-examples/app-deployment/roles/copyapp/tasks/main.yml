@@ -1,4 +1,4 @@
 ---
-# scp 20 war from za
-- name: scp {{ app_name }}
-  shell: /usr/bin/scp -P -i ec2-user@:/opt/app_pkg/production/za/{{ app_name }}.war {{ filesdir }}
+# scp src host file from dest host
+- name: scp {{ app_name }}.war
+  shell: /usr/bin/scp -P PORT -i host.pem root@HOST:/PATH/{{ app_name }}.war /PATH/roles/depapp/files/

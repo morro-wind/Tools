@@ -1,0 +1,13 @@
+---
+#- hosts: localhost
+#  debugger: on_failed
+#  vars:
+#    app_name: quick-inv.war
+#  roles:
+#    - copyapp
+- import_playbook: local.yml
+
+- hosts: $APPNAME
+#  debugger: on_failed
+  roles:
+    - depapp

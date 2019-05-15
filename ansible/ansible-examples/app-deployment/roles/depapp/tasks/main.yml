@@ -1,4 +1,5 @@
 ---
+# deployment app dest host
 - name: push {{ app_name }} file
   copy:
     src: "{{ app_name }}.war"
@@ -7,9 +8,8 @@
     group: tomcat
     mode: 0644
 
+# delete dest host file
 - name: delete {{ app_name }}
   file:
     path: "{{ app_path }}/webapps/{{ app_name }}"
     state: absent
-  notify: stop {{ app_name }}
-  notify: start {{ app_name }}

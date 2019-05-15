@@ -1,0 +1,5 @@
+---
+# deployment app name
+app_name: app1
+# dest host app path
+app_path: /PATH/app/app1
