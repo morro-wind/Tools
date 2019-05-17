@@ -26,5 +26,9 @@ EOF
 sudo yum-config-manager --enable nginx-mainline
 sudo yum install nginx -y
 
+
 curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
+sudo sed -i "s/\$releasever/6/" /etc/yum.repos.d/mariadb.repo
 sudo yum install MariaDB-server MariaDB-client -y
+
+#/etc/nginx/conf.d/*.conf
