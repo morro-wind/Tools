@@ -1,4 +1,11 @@
 #!/bin/bash
+sudo yum update -y
+sudo yum upgrade -y
+sudo service iptables stop
+sudo setenforce 0
+sudo yum groupinstall "Development Libraries" -y
+sudo yum groupinstall "Development Tools" -y
+
 
 wget https://www.php.net/distributions/php-7.3.5.tar.gz
 tar zxf php-7.3.5.tar.gz
