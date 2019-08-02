@@ -1,0 +1,31 @@
+peline {
+    agent any
+    
+    stages {
+        stage ('database backup') {
+            steps {
+                sh "/bin/bash /ansible/scripts/database_backup.sh $check_db"
+            }
+        }
+        stage ('Stop APP') {
+            steps {
+                sh "/bin/bash /ansible/scripts/app_restart.sh stop test.cfg all"
+            }
+        }
+        stage ('Restore DB ps') {
+            steps {
+                sh "/bin/bash check_db.sh $check_db ps"
+            }
+        }
+        stage ('Restore DB quick_os') {
+            steps {
+                sh "/bin/bash check_db.sh $check_db quick_os"
+            }
+        }
+    }
+    post ('Start app'){
+        success {
+            sh "/bin/bash /ansible/scripts/app_restart.sh start test.cfg all"
+        }
+    }
+}

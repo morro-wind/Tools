@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Stop APP') {
+            steps {
+                sh 'echo "stop app"'
+            }
+        }
+        stage('Modify DBName') {
+            steps {
+                sh '/usr/local/bin/ansible -i /opt/ansible/env/test.cfg all -m script -a "modify_conf.sh $check_env"'
+            }
+        }
+        stage('Start APP') {
+            steps {
+                sh 'echo "start app"'
+            }
+        }
+    }
+}
