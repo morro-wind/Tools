@@ -16,35 +16,7 @@ EXAMPLES = '''
 
 '''
 
-'''
-log_root = Path('/home/wind')
-print("log root %s" %log_root)
-app_root = "/home/wind"
-print("app root %s" %app_root)
-list_file = list(log_root.glob('*.sh'))
-app_name = None
-topic_arn = ""
-topic_arn = "test "
-topic_arn = topic_arn + "send topic"
-print("%s" %topic_arn)
-'''
-
-#class DumpFileAlarm(object):
-'''
-    def find_file(self):
-        if list_file:
-            for i in list_file:
-                app_name = PurePosixPath(i).stem
-                s = self.send_alarm(app_name, mailmessage, mailsubject)
-                print(s + " " + app_name)
-                self.restart_application(app_name)
-                self.send_alarm(app_name)
-                self.zip_file(app_name)
-    '''
-
 def send_alarm(topic_arn, app_name, mailmessage, mailsubject):
-    #message = app_name + " " + mailmessage
-    #subject = app_name + " " + mailsubject
     Popen('aws sns publish --topic-arn %s --message \
             "%s" --subject "%s"' %(topic_arn, mailmessage, mailsubject),
             shell = True, stdout = PIPE, stderr = PIPE)
@@ -67,7 +39,7 @@ def main():
             appname='apache-tomcat-8.5.29',
             filename='catalina',
             state='',
-            filetype='log',
+            filetype='out',
             topicarn='',
             message=' time ',
             subject='Production A application'
@@ -88,45 +60,38 @@ def main():
     if list_file:
         for i in list_file:
             appname = PurePosixPath(i).stem
-            #starttime = check_output("ls -l %s | awk '{print $8}'" %i,
-            #        shell = True, cwd = "%s" %filepath)
+            ipaddr = Popen("ip addr show dev eth0 | grep 'global eth0' | awk \
+            '{print $2}' | cut -d / -f1", shell = True, stdout = PIPE, stderr =
+            PIPE)
+            ipaddr = ipaddr.stdout.read().decode('gb2312')
             starttime = Popen("ls -l %s | awk '{print $8}'" %i,
                     shell = True, cwd = "%s" %filepath, stdout = PIPE)
-            #starttime = starttime.stdout.readline().strip()
             starttime = starttime.stdout.read().decode('gb2312')
-            print(starttime)
-            #starttime = starttime.splitlines()
-            #starttime = eval("%s" %starttime)
-            mailmessage = appname + " create " + filetype + message + \
+            mailmessage = str(ipaddr) + appname + " find " + filetype + message + \
             str(starttime)
             mailsubject = appname + subject + " alarm"
-            #send_alarm(topicarn, appname, mailmessage, mailsubject)
-            print("send dump")
-            #time.sleep(10)
+            send_alarm(topicarn, appname, mailmessage, mailsubject)
+            time.sleep(1)
             appname='apache-tomcat-8.5.29'
             Popen("ps axo pid,command | grep %s | grep -v grep | awk '{print \
                     $1}' | xargs kill -9" %appname, shell = True, stderr = PIPE)
-            #time.sleep(3)
+            time.sleep(3)
             appstatus = Popen('ps aux | grep %s | grep -v grep' %appname, shell
                     = True, stderr = PIPE, stdout = PIPE)
             if appstatus.wait() != 0:
                 state = 'start'
                 app_control(apppath, appname, state)
+                time.sleep(70)
                 runtime = Popen("ps axo etime,command | grep %s | grep -v grep |\
-                        awk '{print $1}'" %appname, shell = True)
-                print("")
+                        awk '{print $1}'" %appname, shell = True, stdout = PIPE,
+                        stderr = PIPE)
                 if runtime.wait() == 0:
-                    mailmessage = appname + "runing time " + str(runtime)
-                    mailsubject = "Recovery start " + appname
-                    #send_alarm(topicarn, appname, mailmessage, mailsubject)
-                    print("send start")
+                    runtime = runtime.stdout.read().decode('GBK')
+                    recoverytime = time.strftime("%m-%d %H:%M:%S", time.localtime())
+                    mailmessage = str(ipaddr) + appname + " runing time " + str(runtime)
+                    mailsubject = recoverytime + " Recovery start " + appname
+                    send_alarm(topicarn, appname, mailmessage, mailsubject)
             zip_file(filepath, appname, filetype)
 
 if __name__=='__main__':
     main()
-#    DumpFileAlarm().find_file()
-
-#    DumpFileAlarm().app_control("/home/wind/Downloads",
-#            "apache-tomcat-8.5.29", "start")
-#    DumpFileAlarm().zip_file("/home/wind/Downloads/apache-tomcat-8.5.29/logs",
-#            "catalina", "out")
