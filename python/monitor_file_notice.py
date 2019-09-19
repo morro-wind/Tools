@@ -63,13 +63,20 @@ def main():
             ipaddr = Popen("ip addr show dev eth0 | grep 'global eth0' | awk \
             '{print $2}' | cut -d / -f1", shell = True, stdout = PIPE, stderr =
             PIPE)
-            ipaddr = ipaddr.stdout.read().decode('gb2312')
+            ipaddr = ipaddr.stdout.read().strip().decode('gb2312')
             starttime = Popen("ls -l %s | awk '{print $8}'" %i,
                     shell = True, cwd = "%s" %filepath, stdout = PIPE)
-            starttime = starttime.stdout.read().decode('gb2312')
-            mailmessage = str(ipaddr) + appname + " find " + filetype + message + \
+            starttime = starttime.stdout.read().strip().decode('gb2312')
+            message = str(ipaddr) + appname + " find " + filetype + message + \
             str(starttime)
-            mailsubject = appname + subject + " alarm"
+            mailmessage = '''hostip: %s
+appname: %s
+starttime: %s
+message: %s''' %(ipaddr, appname, starttime, message)
+            mailsubject = str(ipaddr) + appname + subject + " alarm"
+            print(mailmessage)
+            print(mailsubject)
+            break
             send_alarm(topicarn, appname, mailmessage, mailsubject)
             time.sleep(1)
             appname='apache-tomcat-8.5.29'
