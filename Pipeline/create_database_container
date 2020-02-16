@@ -20,7 +20,7 @@ pipeline {
             }
           sh "echo switch $PORT"
         }
-        sh 'ansible -i /tmp/dockerip all -m shell -a "docker run --name ${APPNAME}-db -p $PORT:5432 -v /opt/app/db/$APPNAME:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres -d postgres:9.4.15-alpine"'
+        sh "ansible -i /tmp/dockerip all -m shell -a 'docker run --name ${APPNAME}-db -p $PORT:5432 -v /opt/app/db/$APPNAME:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres -d postgres:9.4.15-alpine'"
       }
     }
   }
