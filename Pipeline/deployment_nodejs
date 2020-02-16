@@ -1,0 +1,119 @@
+pipeline {
+
+  agent {
+    kubernetes {
+      label 'sample-app'
+      defaultContainer 'jnlp'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  component: ci
+spec:
+  # Use service account that can deploy to all namespaces
+
+  containers:
+  - name: busybox
+    image: busybox
+    volumeMounts:
+    - name: kubectl
+      mountPath: /usr/bin/kubectl
+      readOnly: true
+    - name: certs
+      mountPath: /root/.kube/
+      readOnly: true
+    command:
+    - cat
+    tty: true
+  volumes:
+  - name: kubectl
+    hostPath:
+      path: /usr/bin/kubectl
+  - name: certs
+    secret:
+      secretName: kubectl-config
+"""
+    }
+  }
+  
+    environment {
+        APP_NAME = "$APP_NAME"
+        IMAGE_TAG = "docker.example.com/nodejs:${APP_NAME}.${env.BUILD_NUMBER}"
+    }
+    
+    stages {
+        stage('Get build file') {
+            agent any
+            steps {
+                git credentialsId: 'cbd322913bf5', url: 'exampleuser@hostip:/example.git'
+            }
+        }
+        stage('Get nodejs project') {
+            agent any
+            steps {
+                //sh 'ls /usr/bin/ && hostname && ip addr'
+                sh 'rsync -av --delete /opt/example/$APP_NAME ./'
+            }
+        }
+        stage('Build and push nodejs image') {
+            agent any
+            when {
+                environment name: 'APP_NAME', value: 'one'
+            }
+            environment {
+                PARSE_DB_URI = "postgres://postgres:postgres@hostip:5432/example"
+            }
+            steps {
+                sh """
+                docker build -t $IMAGE_TAG --build-arg PROJECT=$APP_NAME --build-arg PARSE_DB_URI=$PARSE_DB_URI .
+                docker push $IMAGE_TAG
+                """
+            }
+        }
+        stage('Build and push two image') {
+            agent any
+            when {
+                environment name: 'APP_NAME', value: 'two'
+            }
+            environment {
+                PARSE_DB_URI = "postgres://postgres:postgres@hostip:5432/example"
+            }
+            steps {
+                sh """
+                docker build -t $IMAGE_TAG --build-arg PREJECT=$APP_NAME --build-arg PARSE_DB_URI=$PARSE_DB_URI .
+                docker push $IMAGE_TAG
+                """
+            }
+        }
+        
+        
+        stage('Deploy nodejs') {
+
+            steps {
+              git credentialsId: 'cbd322913bf5', url: 'exampleuser@hostip:/opt/example.git'
+              container('busybox') {
+                sh '''
+                sed -i "s#docker.example.com/b2c#$IMAGE_TAG#" nodejs.yml
+                sed -i "s#one#$APP_NAME#" nodejs.yml
+                grep $IMAGE_TAG nodejs.yml
+                grep $APP_NAME nodejs.yml
+                kubectl version
+                '''
+                //kubectl get svc $APP_NAME || kubectl apply -f service/$APP_NAME.yml
+                //kubectl apply -f nodejs.yml
+                //'''
+              }
+            }
+        }
+    }
+    
+    post {
+        always {
+            deleteDir()
+        }
+        success {
+            echo 'I succeeeded!'
+        }
+    }
+}

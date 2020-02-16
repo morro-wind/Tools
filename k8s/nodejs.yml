@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: test
+  name: test
+#  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: test
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      name: test
+      labels:
+        app: test
+    spec:
+      containers:
+      - image: docker.example.com/nodejs
+        imagePullPolicy: "Always"
+        name: test
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        readinessProbe:
+          #periodSeconds: 1
+          httpGet:
+            port: 3000
+            path: /
+          #initialDelaySeconds: 3
+          #timeoutSeconds: 3
+        livenessProbe:
+          httpGet:
+            port: 3000
+            path: /
+          initialDelaySeconds: 30
+          timeoutSeconds: 30

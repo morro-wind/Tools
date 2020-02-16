@@ -1,0 +1,27 @@
+pipeline {
+  agent any
+  stages {
+    stage('Synchronize Data Directory') {
+      steps {
+        //sh "sync /opt/app/pgsql/data /opt/app/db/$APPNAME"
+        sh 'echo test'
+      }
+    }
+    stage('Create Postgres Container') {
+      steps {
+        script {
+          switch(env.APPNAME) {
+            case "one":
+              PORT = '5423'
+              break
+            case "two":
+              PORT = '5433'
+              break
+            }
+          sh "echo switch $PORT"
+        }
+        sh "echo steps $PORT"
+      }
+    }
+  }
+}

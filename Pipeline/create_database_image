@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+    options{
+        timeout(time:1, unit: 'HOURS')
+    }
+    environment {
+        PGPASSWORD='postgres'
+    }
+    
+    stages {
+        /*stage('configure ansible_ssh_user') {
+            steps {
+                sh 'echo $HOSTIP ansible_ssh_user=$USER > /tmp/dockerip'
+            }
+        }*/
+        stage('Run container') {
+            steps {
+                sh 'echo $HOSTIP ansible_ssh_user=$USER > /tmp/dockerip'
+                //sh "ansible -i /tmp/dockerip all -m shell -a 'docker rm -f postgres-test'"
+                sh "ansible -i /tmp/dockerip all -m shell -a 'docker run --name postgres-test -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e PGDATA=/var/lib/postgresdb -d postgres:9.4.15-alpine'"
+                sh 'sleep 5'
+            }
+        }
+        stage('Create pss and quick_ods') {
+            steps {
+                sh 'psql -p 5432 -h $HOSTIP -U postgres -c "create database one;"'
+                sh 'psql -h $HOSTIP -U postgres -c "create database two;"'
+            }
+        }
+        stage('Restore one') {
+            options{
+                timeout(time:1, unit: 'HOURS')
+            }
+            steps {
+                //sh 'pg_restore -h $HOSTIP -p 5432 -U postgres -x -O -d one $oneFILE >> /tmp/one.log 2>&1 || echo $?'
+                sh 'pg_restore -h $HOSTIP -p 5432 -U postgres -x -O -d pss $oneFILE || echo $?'
+            }
+        }
+        stage('Restore two') {
+            steps {
+                //sh 'pg_restore -h $HOSTIP -p 5432 -U postgres -x -O -d two $twoFILE >> /tmp/ods.log 2>&1'
+                sh 'pg_restore -h $HOSTIP -p 5432 -U postgres -x -O -d two $twoFILE || echo $?'
+            }
+        }
+        stage('Commit container'){
+            steps {
+                sh "ansible -i /tmp/dockerip all -m shell -a 'docker commit postgres-test docker.example.com/postgres-test'"
+            }
+        }
+        stage('Push image') {
+            steps {
+                sh "ansible -i /tmp/dockerip all -m shell -a 'docker push docker.example.com/postgres-test'"
+            }
+        }
+        stage('Delete docker') {
+            steps {
+                sh "ansible -i /tmp/dockerip all -m shell -a 'docker rm -f postgres-test'"
+            }
+        }
+    }
+}
