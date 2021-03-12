@@ -1,0 +1,14 @@
+---
+- hosts: all
+  gather_facts: false
+  remote_user: root
+  tasks:
+    - name: change user passwd
+      user: name={{ item.name }} password={{ item.chpass | password_hash('sha512') }} update_password=always
+      with_items:
+        - { name: 'ops', chpass: 'New@pass' }
+        - { name: 'root', chpass: 'New@pass' }
+    - name: Config /etc/sudoers
+      lineinfile: dest=/etc/sudoers state=present line='{{ item }}' validate='visudo -cf %s'
+      with_items:
+        - "ops ALL=(ALL) NOPASSWD: ALL"
