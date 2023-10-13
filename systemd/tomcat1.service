@@ -1,0 +1,23 @@
+[Unit]
+Description=Atlassian Confluence Server
+After=syslog.target
+After=network.target
+
+[Service]
+Environment=CATALINA_HOME=/opt/atlassian/confluence
+Environment=CATALINA_BASE=/opt/atlassian/confluence
+Environment=CATALINA_TMPDIR=/opt/atlassian/confluence/temp
+Environment=CATALINA_PID=/opt/atlassian/confluence/work/catalina.pid
+#Environment=JRE_HOME=/opt/atlassian/confluence/jre
+Type=forking
+Restart=on-failure
+#PIDFile=/opt/atlassian/confluence/work/catalina.pid
+ExecStart=/opt/atlassian/confluence/bin/start-confluence.sh
+ExecStop=/opt/atlassian/confluence/bin/stop-confluence.sh
+#RestartSec=10s
+User=confluence
+Group=confluence
+#LimitNOFILE=8192
+
+[Install]
+WantedBy=multi-user.target
