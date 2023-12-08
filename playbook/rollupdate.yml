@@ -1,0 +1,9 @@
+---
+
+- name: Rolling update
+  hosts: "{{ variable_host }}"
+  serial: "{{ NUM }}"
+  roles:
+    - copy
+    - supervisorctl
+    - uri

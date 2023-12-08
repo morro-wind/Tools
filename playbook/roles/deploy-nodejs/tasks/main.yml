@@ -1,0 +1,11 @@
+- name: Run nodejs deploy script
+  shell: |
+    export PATH=/home/ubuntu/.nvm/versions/node/v14.4.0/bin:/home/ubuntu/.nvm/versions/node/v14.4.0/bin:$PATH
+    #npm version
+    npm run build && npm run deploy
+  args:
+    chdir: "{{ WORKSPACE }}"
+      #executable: /bin/bash
+  #environment:
+    #NVM_BIN: "/home/ubuntu/.nvm/versions/node/v14.4.0/bin"
+    #PATH: $PATH:/home/ubuntu/.nvm/versions/node/v14.4.0/bin

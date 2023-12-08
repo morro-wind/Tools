@@ -1,0 +1,9 @@
+- name: Check web service responding
+  ansible.builtin.uri:
+    url: "{{ URL }}"
+  register: response
+
+- name: show response
+  debug:
+    var: response
+

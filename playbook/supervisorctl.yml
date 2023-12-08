@@ -1,0 +1,6 @@
+---
+
+- name: Copy dest host
+  hosts: "{{ variable_host }}"
+  roles:
+    - supervisorctl

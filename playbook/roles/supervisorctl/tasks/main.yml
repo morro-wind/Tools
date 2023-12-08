@@ -1,0 +1,11 @@
+
+- name: Stop application
+  supervisorctl:
+    name: "{{ SERVICE_NAME }}"
+    state: stopped
+  ignore_errors: yes
+
+- name: Start application
+  supervisorctl:
+    name: "{{ SERVICE_NAME }}"
+    state: started

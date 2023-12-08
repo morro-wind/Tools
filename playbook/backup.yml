@@ -1,0 +1,6 @@
+---
+
+- name: Backup old application
+  hosts: "{{ variable_host }}"
+  roles:
+    - backup

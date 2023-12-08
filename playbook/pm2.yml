@@ -1,0 +1,6 @@
+---
+
+- name: Restart pm2
+  hosts: "{{ variable_host }}"
+  roles:
+    - pm2

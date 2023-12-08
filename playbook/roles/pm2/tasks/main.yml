@@ -1,0 +1,8 @@
+- name: Run pm2 script
+  shell: |
+    export PATH={{ LPATH }}:$PATH
+    {{ RESTARTED }}
+    #pm2 startOrRestart pm2.json
+  args:
+    chdir: "{{ WORKSPACE }}"
+    executable: /bin/bash

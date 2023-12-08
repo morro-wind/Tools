@@ -1,0 +1,6 @@
+---
+
+- name: Restart service
+  hosts: "{{ variable_host }}"
+  roles:
+    - systemd
